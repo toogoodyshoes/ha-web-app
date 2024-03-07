@@ -215,6 +215,7 @@ resource "aws_rds_cluster" "wp_rds" {
   cluster_identifier     = "wordpress-workshop"
   master_username        = "wpadmin"
   master_password        = "wpadminat123"
+  skip_final_snapshot    = true
 }
 
 resource "aws_rds_cluster_instance" "ws_rds_cluster_instance" {
