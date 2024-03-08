@@ -2,8 +2,8 @@
 
 DB_NAME="wordpress"
 DB_USERNAME="wpadmin"
-DB_PASSWORD=""
-DB_HOST="wordpress-workshop.cluster-ctdnyvvewl6s.eu-west-1.rds.amazonaws.com"
+DB_PASSWORD="wpadminat123"
+DB_HOST=""
 
 yum update -y
 
