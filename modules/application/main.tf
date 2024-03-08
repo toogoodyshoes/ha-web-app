@@ -24,6 +24,7 @@ resource "aws_vpc_security_group_ingress_rule" "wp_alb_sg" {
 }
 
 resource "aws_lb_target_group" "wp_tg" {
+  vpc_id   = module.network.wp_vpc.id
   name     = "Wordpress-TargetGroup"
   port     = 80
   protocol = "HTTP"
@@ -72,7 +73,7 @@ resource "aws_launch_template" "wp_lt" {
   instance_type = "t2.small"
   vpc_security_group_ids = [
     aws_security_group.wp_wordpress_sg.id,
-    module.data.db_client_sg,
+    module.data.db_client_sg.id,
     module.data.wp_fs_client_sg.id
   ]
   user_data = filebase64("./modules/application/userdata.sh")
