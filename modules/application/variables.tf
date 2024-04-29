@@ -17,3 +17,19 @@ variable "application_subnet_b_index" {
     type = number
     default = 1
 }
+
+variable "vpc-id" {
+    type = string
+}
+
+variable "zone-a-subnets" {}
+
+variable "zone-b-subnets" {}
+
+variable "db-client-sg-id" {
+    type = string
+}
+
+variable "wp-fs-client-sg-id" {
+  type = string
+}

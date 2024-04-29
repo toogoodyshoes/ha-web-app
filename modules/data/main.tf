@@ -1,17 +1,12 @@
-module "network" {
-  source = "../network"
-}
-
-
 # Aurora Cluster Security Group
 resource "aws_security_group" "db_client_sg" {
   name   = "WP Databse Client SG"
-  vpc_id = module.network.wp_vpc.id
+  vpc_id = var.vpc-id
 }
 
 resource "aws_security_group" "db_sg" {
   name   = "WP Database SG"
-  vpc_id = module.network.wp_vpc.id
+  vpc_id = var.vpc-id
 }
 
 resource "aws_vpc_security_group_egress_rule" "db_sg" {
@@ -27,8 +22,8 @@ resource "aws_vpc_security_group_egress_rule" "db_sg" {
 resource "aws_db_subnet_group" "aurora_wp_sng" {
   name = "aurora-wordpress"
   subnet_ids = [
-    module.network.zone_a_subnets[var.data_subnet_a_index].id,
-    module.network.zone_b_subnets[var.data_subnet_b_index].id
+    var.zone-a-subnets[var.data_subnet_a_index].id,
+    var.zone-b-subnets[var.data_subnet_b_index].id
   ]
 }
 
@@ -66,12 +61,12 @@ resource "aws_rds_cluster_instance" "ws_rds_cluster_instance_reader" {
 # EFS Cluster
 resource "aws_security_group" "wp_fs_client_sg" {
   name   = "WP File Server Client SG"
-  vpc_id = module.network.wp_vpc.id
+  vpc_id = var.vpc-id
 }
 
 resource "aws_security_group" "wp_fs_sg" {
   name   = "WP File Server SG"
-  vpc_id = module.network.wp_vpc.id
+  vpc_id = var.vpc-id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "wp_fs_sg" {
@@ -97,12 +92,12 @@ resource "aws_efs_file_system" "wp_efs" {
 
 resource "aws_efs_mount_target" "app-a-mt" {
   file_system_id  = aws_efs_file_system.wp_efs.id
-  subnet_id       = module.network.zone_a_subnets[var.application_subnet_a_index].id
+  subnet_id       = var.zone-a-subnets[var.application_subnet_a_index].id
   security_groups = [aws_security_group.wp_fs_sg.id]
 }
 
 resource "aws_efs_mount_target" "app-b-mt" {
   file_system_id  = aws_efs_file_system.wp_efs.id
-  subnet_id       = module.network.zone_b_subnets[var.application_subnet_b_index].id
+  subnet_id       = var.zone-b-subnets[var.application_subnet_b_index].id
   security_groups = [aws_security_group.wp_fs_sg.id]
 }
